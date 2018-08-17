@@ -1,0 +1,769 @@
+kaira@nithin:~$ ipython
+Python 3.6.5 |Anaconda, Inc.| (default, Apr 29 2018, 16:14:56) 
+Type 'copyright', 'credits' or 'license' for more information
+IPython 6.4.0 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]: import pandas as pd
+
+In [2]: import numpy as np
+
+In [3]: data=pd.read_csv('/home/kaira/Desktop/data.csv')
+
+In [4]: data.head()
+Out[4]: 
+         id diagnosis  radius_mean  texture_mean     ...       concave points_worst  symmetry_worst  fractal_dimension_worst  Unnamed: 32
+0    842302         M        17.99         10.38     ...                     0.2654          0.4601                  0.11890          NaN
+1    842517         M        20.57         17.77     ...                     0.1860          0.2750                  0.08902          NaN
+2  84300903         M        19.69         21.25     ...                     0.2430          0.3613                  0.08758          NaN
+3  84348301         M        11.42         20.38     ...                     0.2575          0.6638                  0.17300          NaN
+4  84358402         M        20.29         14.34     ...                     0.1625          0.2364                  0.07678          NaN
+
+[5 rows x 33 columns]
+
+In [5]: data.coluns
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+<ipython-input-5-59cc072093ab> in <module>()
+----> 1 data.coluns
+
+~/.local/lib/python3.6/site-packages/pandas/core/generic.py in __getattr__(self, name)
+   4374             if self._info_axis._can_hold_identifiers_and_holds_name(name):
+   4375                 return self[name]
+-> 4376             return object.__getattribute__(self, name)
+   4377 
+   4378     def __setattr__(self, name, value):
+
+AttributeError: 'DataFrame' object has no attribute 'coluns'
+
+In [6]: data.coluns()
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+<ipython-input-6-a227a3093441> in <module>()
+----> 1 data.coluns()
+
+~/.local/lib/python3.6/site-packages/pandas/core/generic.py in __getattr__(self, name)
+   4374             if self._info_axis._can_hold_identifiers_and_holds_name(name):
+   4375                 return self[name]
+-> 4376             return object.__getattribute__(self, name)
+   4377 
+   4378     def __setattr__(self, name, value):
+
+AttributeError: 'DataFrame' object has no attribute 'coluns'
+
+In [7]: data.columns()
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-7-05cf52d0a56e> in <module>()
+----> 1 data.columns()
+
+TypeError: 'Index' object is not callable
+
+In [8]: data.columns
+Out[8]: 
+Index(['id', 'diagnosis', 'radius_mean', 'texture_mean', 'perimeter_mean',
+       'area_mean', 'smoothness_mean', 'compactness_mean', 'concavity_mean',
+       'concave points_mean', 'symmetry_mean', 'fractal_dimension_mean',
+       'radius_se', 'texture_se', 'perimeter_se', 'area_se', 'smoothness_se',
+       'compactness_se', 'concavity_se', 'concave points_se', 'symmetry_se',
+       'fractal_dimension_se', 'radius_worst', 'texture_worst',
+       'perimeter_worst', 'area_worst', 'smoothness_worst',
+       'compactness_worst', 'concavity_worst', 'concave points_worst',
+       'symmetry_worst', 'fractal_dimension_worst', 'Unnamed: 32'],
+      dtype='object')
+
+In [9]: data.shape
+Out[9]: (569, 33)
+
+In [10]: data.isnull().sum()
+Out[10]: 
+id                           0
+diagnosis                    0
+radius_mean                  0
+texture_mean                 0
+perimeter_mean               0
+area_mean                    0
+smoothness_mean              0
+compactness_mean             0
+concavity_mean               0
+concave points_mean          0
+symmetry_mean                0
+fractal_dimension_mean       0
+radius_se                    0
+texture_se                   0
+perimeter_se                 0
+area_se                      0
+smoothness_se                0
+compactness_se               0
+concavity_se                 0
+concave points_se            0
+symmetry_se                  0
+fractal_dimension_se         0
+radius_worst                 0
+texture_worst                0
+perimeter_worst              0
+area_worst                   0
+smoothness_worst             0
+compactness_worst            0
+concavity_worst              0
+concave points_worst         0
+symmetry_worst               0
+fractal_dimension_worst      0
+Unnamed: 32                569
+dtype: int64
+
+In [11]: data.drop('Unnamed: 32',axis=1,inplace=True)
+
+In [12]: data.isnull().sum()
+Out[12]: 
+id                         0
+diagnosis                  0
+radius_mean                0
+texture_mean               0
+perimeter_mean             0
+area_mean                  0
+smoothness_mean            0
+compactness_mean           0
+concavity_mean             0
+concave points_mean        0
+symmetry_mean              0
+fractal_dimension_mean     0
+radius_se                  0
+texture_se                 0
+perimeter_se               0
+area_se                    0
+smoothness_se              0
+compactness_se             0
+concavity_se               0
+concave points_se          0
+symmetry_se                0
+fractal_dimension_se       0
+radius_worst               0
+texture_worst              0
+perimeter_worst            0
+area_worst                 0
+smoothness_worst           0
+compactness_worst          0
+concavity_worst            0
+concave points_worst       0
+symmetry_worst             0
+fractal_dimension_worst    0
+dtype: int64
+
+In [13]: data1=data.copy()
+
+In [14]: data.set_index(['id'],inplace=True)
+
+In [15]: data.head()
+Out[15]: 
+         diagnosis  radius_mean  texture_mean           ...             concave points_worst  symmetry_worst  fractal_dimension_worst
+id                                                      ...                                                                          
+842302           M        17.99         10.38           ...                           0.2654          0.4601                  0.11890
+842517           M        20.57         17.77           ...                           0.1860          0.2750                  0.08902
+84300903         M        19.69         21.25           ...                           0.2430          0.3613                  0.08758
+84348301         M        11.42         20.38           ...                           0.2575          0.6638                  0.17300
+84358402         M        20.29         14.34           ...                           0.1625          0.2364                  0.07678
+
+[5 rows x 31 columns]
+
+In [16]: data[data['diagnosis']=='M'].count()
+Out[16]: 
+diagnosis                  212
+radius_mean                212
+texture_mean               212
+perimeter_mean             212
+area_mean                  212
+smoothness_mean            212
+compactness_mean           212
+concavity_mean             212
+concave points_mean        212
+symmetry_mean              212
+fractal_dimension_mean     212
+radius_se                  212
+texture_se                 212
+perimeter_se               212
+area_se                    212
+smoothness_se              212
+compactness_se             212
+concavity_se               212
+concave points_se          212
+symmetry_se                212
+fractal_dimension_se       212
+radius_worst               212
+texture_worst              212
+perimeter_worst            212
+area_worst                 212
+smoothness_worst           212
+compactness_worst          212
+concavity_worst            212
+concave points_worst       212
+symmetry_worst             212
+fractal_dimension_worst    212
+dtype: int64
+
+In [17]: data[data['diagnosis']=='M']['diagnosis'].count()
+Out[17]: 212
+
+In [18]: data[data['diagnosis']=='B']['diagnosis'].count()
+Out[18]: 357
+
+In [19]: 212+357
+Out[19]: 569
+
+In [20]: data.dtype
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+<ipython-input-20-ab0a5b0d7958> in <module>()
+----> 1 data.dtype
+
+~/.local/lib/python3.6/site-packages/pandas/core/generic.py in __getattr__(self, name)
+   4374             if self._info_axis._can_hold_identifiers_and_holds_name(name):
+   4375                 return self[name]
+-> 4376             return object.__getattribute__(self, name)
+   4377 
+   4378     def __setattr__(self, name, value):
+
+AttributeError: 'DataFrame' object has no attribute 'dtype'
+
+In [21]: data.dtype()
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+<ipython-input-21-2d09d10b65c9> in <module>()
+----> 1 data.dtype()
+
+~/.local/lib/python3.6/site-packages/pandas/core/generic.py in __getattr__(self, name)
+   4374             if self._info_axis._can_hold_identifiers_and_holds_name(name):
+   4375                 return self[name]
+-> 4376             return object.__getattribute__(self, name)
+   4377 
+   4378     def __setattr__(self, name, value):
+
+AttributeError: 'DataFrame' object has no attribute 'dtype'
+
+In [22]: data.head()
+Out[22]: 
+         diagnosis  radius_mean  texture_mean           ...             concave points_worst  symmetry_worst  fractal_dimension_worst
+id                                                      ...                                                                          
+842302           M        17.99         10.38           ...                           0.2654          0.4601                  0.11890
+842517           M        20.57         17.77           ...                           0.1860          0.2750                  0.08902
+84300903         M        19.69         21.25           ...                           0.2430          0.3613                  0.08758
+84348301         M        11.42         20.38           ...                           0.2575          0.6638                  0.17300
+84358402         M        20.29         14.34           ...                           0.1625          0.2364                  0.07678
+
+[5 rows x 31 columns]
+
+In [23]: data['diagnosis'].map({'M':1,'B':0})
+Out[23]: 
+id
+842302      1
+842517      1
+84300903    1
+84348301    1
+84358402    1
+843786      1
+844359      1
+84458202    1
+844981      1
+84501001    1
+845636      1
+84610002    1
+846226      1
+846381      1
+84667401    1
+84799002    1
+848406      1
+84862001    1
+849014      1
+8510426     0
+8510653     0
+8510824     0
+8511133     1
+851509      1
+852552      1
+852631      1
+852763      1
+852781      1
+852973      1
+853201      1
+           ..
+921362      0
+921385      0
+921386      0
+921644      0
+922296      0
+922297      0
+922576      0
+922577      0
+922840      0
+923169      0
+923465      0
+923748      0
+923780      0
+924084      0
+924342      0
+924632      0
+924934      0
+924964      0
+925236      0
+925277      0
+925291      0
+925292      0
+925311      0
+925622      1
+926125      1
+926424      1
+926682      1
+926954      1
+927241      1
+92751       0
+Name: diagnosis, Length: 569, dtype: int64
+
+In [24]: data['diagnosis'].map({'M':1,'B':0},inplace=True)
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-24-0fd47a0d366c> in <module>()
+----> 1 data['diagnosis'].map({'M':1,'B':0},inplace=True)
+
+TypeError: map() got an unexpected keyword argument 'inplace'
+
+In [25]: data['diagnosis']=data['diagnosis'].map({'M':1,'B':0})
+
+In [26]: data.head()
+Out[26]: 
+          diagnosis  radius_mean  texture_mean           ...             concave points_worst  symmetry_worst  fractal_dimension_worst
+id                                                       ...                                                                          
+842302            1        17.99         10.38           ...                           0.2654          0.4601                  0.11890
+842517            1        20.57         17.77           ...                           0.1860          0.2750                  0.08902
+84300903          1        19.69         21.25           ...                           0.2430          0.3613                  0.08758
+84348301          1        11.42         20.38           ...                           0.2575          0.6638                  0.17300
+84358402          1        20.29         14.34           ...                           0.1625          0.2364                  0.07678
+
+[5 rows x 31 columns]
+
+In [27]: type(data)
+Out[27]: pandas.core.frame.DataFrame
+
+In [28]: data.dtypes
+Out[28]: 
+diagnosis                    int64
+radius_mean                float64
+texture_mean               float64
+perimeter_mean             float64
+area_mean                  float64
+smoothness_mean            float64
+compactness_mean           float64
+concavity_mean             float64
+concave points_mean        float64
+symmetry_mean              float64
+fractal_dimension_mean     float64
+radius_se                  float64
+texture_se                 float64
+perimeter_se               float64
+area_se                    float64
+smoothness_se              float64
+compactness_se             float64
+concavity_se               float64
+concave points_se          float64
+symmetry_se                float64
+fractal_dimension_se       float64
+radius_worst               float64
+texture_worst              float64
+perimeter_worst            float64
+area_worst                 float64
+smoothness_worst           float64
+compactness_worst          float64
+concavity_worst            float64
+concave points_worst       float64
+symmetry_worst             float64
+fractal_dimension_worst    float64
+dtype: object
+
+In [29]: data.describe()
+Out[29]: 
+        diagnosis  radius_mean  texture_mean           ...             concave points_worst  symmetry_worst  fractal_dimension_worst
+count  569.000000   569.000000    569.000000           ...                       569.000000      569.000000               569.000000
+mean     0.372583    14.127292     19.289649           ...                         0.114606        0.290076                 0.083946
+std      0.483918     3.524049      4.301036           ...                         0.065732        0.061867                 0.018061
+min      0.000000     6.981000      9.710000           ...                         0.000000        0.156500                 0.055040
+25%      0.000000    11.700000     16.170000           ...                         0.064930        0.250400                 0.071460
+50%      0.000000    13.370000     18.840000           ...                         0.099930        0.282200                 0.080040
+75%      1.000000    15.780000     21.800000           ...                         0.161400        0.317900                 0.092080
+max      1.000000    28.110000     39.280000           ...                         0.291000        0.663800                 0.207500
+
+[8 rows x 31 columns]
+
+In [30]: data.head()
+Out[30]: 
+          diagnosis  radius_mean  texture_mean           ...             concave points_worst  symmetry_worst  fractal_dimension_worst
+id                                                       ...                                                                          
+842302            1        17.99         10.38           ...                           0.2654          0.4601                  0.11890
+842517            1        20.57         17.77           ...                           0.1860          0.2750                  0.08902
+84300903          1        19.69         21.25           ...                           0.2430          0.3613                  0.08758
+84348301          1        11.42         20.38           ...                           0.2575          0.6638                  0.17300
+84358402          1        20.29         14.34           ...                           0.1625          0.2364                  0.07678
+
+[5 rows x 31 columns]
+
+In [31]: X=data.drop('diagnosis',axis=1)
+
+In [32]: y=data['diagnosis']
+
+In [33]: from sklearn.model_selection import train_test_split
+
+In [34]: X_train,X_test,y_train,y_test=train_test_split(X,y,random_state=42,test_size=0.2)
+
+In [35]: from sklearn.ensemble import RandomForestClassifier
+
+In [36]: model=RandomForestClassifier()
+
+In [37]: from sklearn.model_selection import GridSearchCV
+
+In [38]: model=RandomForestClassifier(random_state=42)
+
+In [39]: np.random.seed(42)
+
+In [40]: start=time.time()
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+<ipython-input-40-ac3f1534e516> in <module>()
+----> 1 start=time.time()
+
+NameError: name 'time' is not defined
+
+In [41]: param_dist={'max_depth':[2,3,4],'max_features':['auto','sqrt','log2',None]}
+
+In [42]: del param_dist
+
+In [43]: param_dist={'max_depth':[2,3,4],'max_features':['auto','sqrt','log2',None],'criterion':['gini','entropy'],'bootstrap':[True,False]}
+
+In [44]: cv_rf=GridSearchCV(model,cv=10,param_grid=param_dist,n_jobs=3)
+
+In [45]: cv.fit(X_train,y_train)
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+<ipython-input-45-6808da408ab1> in <module>()
+----> 1 cv.fit(X_train,y_train)
+
+NameError: name 'cv' is not defined
+
+In [46]: cv_rf.fit(X_train,y_train)
+Out[46]: 
+GridSearchCV(cv=10, error_score='raise',
+       estimator=RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+            max_depth=None, max_features='auto', max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, n_estimators=10, n_jobs=1,
+            oob_score=False, random_state=42, verbose=0, warm_start=False),
+       fit_params=None, iid=True, n_jobs=3,
+       param_grid={'max_depth': [2, 3, 4], 'max_features': ['auto', 'sqrt', 'log2', None], 'criterion': ['gini', 'entropy'], 'bootstrap': [True, False]},
+       pre_dispatch='2*n_jobs', refit=True, return_train_score='warn',
+       scoring=None, verbose=0)
+
+In [47]: cv_rf.best_params_
+Out[47]: 
+{'bootstrap': True,
+ 'criterion': 'gini',
+ 'max_depth': 3,
+ 'max_features': 'log2'}
+
+In [48]: cv_rf=GridSearchCV(model,cv=10,param_grid=param_dist,n_jobs=-1)
+
+In [49]: cv_rf.fit(X_train,y_train)
+Out[49]: 
+GridSearchCV(cv=10, error_score='raise',
+       estimator=RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+            max_depth=None, max_features='auto', max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, n_estimators=10, n_jobs=1,
+            oob_score=False, random_state=42, verbose=0, warm_start=False),
+       fit_params=None, iid=True, n_jobs=-1,
+       param_grid={'max_depth': [2, 3, 4], 'max_features': ['auto', 'sqrt', 'log2', None], 'criterion': ['gini', 'entropy'], 'bootstrap': [True, False]},
+       pre_dispatch='2*n_jobs', refit=True, return_train_score='warn',
+       scoring=None, verbose=0)
+
+In [50]: cv_rf.best_params_
+Out[50]: 
+{'bootstrap': True,
+ 'criterion': 'gini',
+ 'max_depth': 3,
+ 'max_features': 'log2'}
+
+In [51]: model=RandomForestClassifier(random_state=42,criterion='gini',max_depth=3,max_features='log2',bootstrap=True)
+
+In [52]: model.fit(X_train,y_train)
+Out[52]: 
+RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+            max_depth=3, max_features='log2', max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, n_estimators=10, n_jobs=1,
+            oob_score=False, random_state=42, verbose=0, warm_start=False)
+
+In [53]: y_model=model.predict(X_test)
+
+In [54]: from sklearn.metrics import accuracy_score
+
+In [55]: accuracy_score(y_model,y_test)
+Out[55]: 0.9649122807017544
+
+In [56]: model=RandomForestClassifier(random_state=42)
+
+In [57]: model.set_params(criterion='gini',max_depth=3,max_features='log2')
+Out[57]: 
+RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+            max_depth=3, max_features='log2', max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, n_estimators=10, n_jobs=1,
+            oob_score=False, random_state=42, verbose=0, warm_start=False)
+
+In [58]: model.set_params(warm_start=True,oob_score=True)
+Out[58]: 
+RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+            max_depth=3, max_features='log2', max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, n_estimators=10, n_jobs=1,
+            oob_score=True, random_state=42, verbose=0, warm_start=True)
+
+In [59]: model
+Out[59]: 
+RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+            max_depth=3, max_features='log2', max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, n_estimators=10, n_jobs=1,
+            oob_score=True, random_state=42, verbose=0, warm_start=True)
+
+In [60]: min_estimators=15
+
+In [61]: max_estimators=1000
+
+In [62]: error_rate=[]
+
+In [63]: for i in range(min_estimators,max_estimators+1):
+    ...:     model.set_params(n_estimators=i)
+    ...:     model.fit(X_train,y_train)
+    ...:     oob_error=1-model.oob_score_
+    ...:     error_rate.append(oob_error)
+    ...:     
+
+In [64]: max(error_rate)
+Out[64]: 0.05714285714285716
+
+In [65]: error=pd.Series(error_rate)
+
+In [66]: max(error)
+Out[66]: 0.05714285714285716
+
+In [67]: import matplotlib.pyplot as plt
+
+In [68]: plt.plot(error)
+Out[68]: [<matplotlib.lines.Line2D at 0x7f180da877b8>]
+
+In [69]: plt.show(error)
+---------------------------------------------------------------------------
+ValueError                                Traceback (most recent call last)
+<ipython-input-69-af5bb303a541> in <module>()
+----> 1 plt.show(error)
+
+~/python/lib/python3.6/site-packages/matplotlib/pyplot.py in show(*args, **kw)
+    251     """
+    252     global _show
+--> 253     return _show(*args, **kw)
+    254 
+    255 
+
+~/python/lib/python3.6/site-packages/matplotlib/backend_bases.py in show(cls, block)
+    205             if get_backend() == "WebAgg":
+    206                 block = True
+--> 207         if block:
+    208             cls.mainloop()
+    209 
+
+~/.local/lib/python3.6/site-packages/pandas/core/generic.py in __nonzero__(self)
+   1574         raise ValueError("The truth value of a {0} is ambiguous. "
+   1575                          "Use a.empty, a.bool(), a.item(), a.any() or a.all()."
+-> 1576                          .format(self.__class__.__name__))
+   1577 
+   1578     __bool__ = __nonzero__
+
+ValueError: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+
+In [70]: plt.plot(error)
+Out[70]: [<matplotlib.lines.Line2D at 0x7f18085be828>]
+
+In [71]: plt.show(error)
+---------------------------------------------------------------------------
+ValueError                                Traceback (most recent call last)
+<ipython-input-71-af5bb303a541> in <module>()
+----> 1 plt.show(error)
+
+~/python/lib/python3.6/site-packages/matplotlib/pyplot.py in show(*args, **kw)
+    251     """
+    252     global _show
+--> 253     return _show(*args, **kw)
+    254 
+    255 
+
+~/python/lib/python3.6/site-packages/matplotlib/backend_bases.py in show(cls, block)
+    205             if get_backend() == "WebAgg":
+    206                 block = True
+--> 207         if block:
+    208             cls.mainloop()
+    209 
+
+~/.local/lib/python3.6/site-packages/pandas/core/generic.py in __nonzero__(self)
+   1574         raise ValueError("The truth value of a {0} is ambiguous. "
+   1575                          "Use a.empty, a.bool(), a.item(), a.any() or a.all()."
+-> 1576                          .format(self.__class__.__name__))
+   1577 
+   1578     __bool__ = __nonzero__
+
+ValueError: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+
+In [72]: model.set_params(n_estimators=400,oob_score=False)
+Out[72]: 
+RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+            max_depth=3, max_features='log2', max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, n_estimators=400, n_jobs=1,
+            oob_score=False, random_state=42, verbose=0, warm_start=True)
+
+In [73]: model.fit(X_train,y_train)
+---------------------------------------------------------------------------
+ValueError                                Traceback (most recent call last)
+<ipython-input-73-b7a8c64777c1> in <module>()
+----> 1 model.fit(X_train,y_train)
+
+~/python/lib/python3.6/site-packages/sklearn/ensemble/forest.py in fit(self, X, y, sample_weight)
+    300             raise ValueError('n_estimators=%d must be larger or equal to '
+    301                              'len(estimators_)=%d when warm_start==True'
+--> 302                              % (self.n_estimators, len(self.estimators_)))
+    303 
+    304         elif n_more_estimators == 0:
+
+ValueError: n_estimators=400 must be larger or equal to len(estimators_)=1000 when warm_start==True
+
+In [74]: model.set_params(n_estimators=400,oob_score=False,warm_start=False)
+Out[74]: 
+RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+            max_depth=3, max_features='log2', max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, n_estimators=400, n_jobs=1,
+            oob_score=False, random_state=42, verbose=0, warm_start=False)
+
+In [75]: model.fit(X_train,y_train)
+Out[75]: 
+RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+            max_depth=3, max_features='log2', max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, n_estimators=400, n_jobs=1,
+            oob_score=False, random_state=42, verbose=0, warm_start=False)
+
+In [76]: y_model=model.predict(X_test)
+
+In [77]: from sklearn.metrics import confusionmatrix
+---------------------------------------------------------------------------
+ImportError                               Traceback (most recent call last)
+<ipython-input-77-c1740fd0001f> in <module>()
+----> 1 from sklearn.metrics import confusionmatrix
+
+ImportError: cannot import name 'confusionmatrix'
+
+In [78]: from sklearn.metrics import confusion_matrix
+
+In [79]: confusion_matrix(y_test,y_model)
+Out[79]: 
+array([[70,  1],
+       [ 3, 40]])
+
+In [80]: confusion=confusion_matrix(y_test,y_model)
+
+In [81]: import seaborn as sns
+
+In [82]: sns.heatmap(confusion,annot=True,fnt='d',cbar=False)
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+<ipython-input-82-63bb8ba7e263> in <module>()
+----> 1 sns.heatmap(confusion,annot=True,fnt='d',cbar=False)
+
+~/python/lib/python3.6/site-packages/seaborn/matrix.py in heatmap(data, vmin, vmax, cmap, center, robust, annot, fmt, annot_kws, linewidths, linecolor, cbar, cbar_kws, cbar_ax, square, xticklabels, yticklabels, mask, ax, **kwargs)
+    526     if square:
+    527         ax.set_aspect("equal")
+--> 528     plotter.plot(ax, cbar_ax, kwargs)
+    529     return ax
+    530 
+
+~/python/lib/python3.6/site-packages/seaborn/matrix.py in plot(self, ax, cax, kws)
+    283         # Draw the heatmap
+    284         mesh = ax.pcolormesh(self.plot_data, vmin=self.vmin, vmax=self.vmax,
+--> 285                              cmap=self.cmap, **kws)
+    286 
+    287         # Set the axis limits
+
+~/python/lib/python3.6/site-packages/matplotlib/__init__.py in inner(ax, *args, **kwargs)
+   1853                         "the Matplotlib list!)" % (label_namer, func.__name__),
+   1854                         RuntimeWarning, stacklevel=2)
+-> 1855             return func(ax, *args, **kwargs)
+   1856 
+   1857         inner.__doc__ = _add_data_doc(inner.__doc__,
+
+~/python/lib/python3.6/site-packages/matplotlib/axes/_axes.py in pcolormesh(self, *args, **kwargs)
+   5942         collection = mcoll.QuadMesh(Nx - 1, Ny - 1, coords,
+   5943                                     antialiased=antialiased, shading=shading,
+-> 5944                                     **kwargs)
+   5945         collection.set_alpha(alpha)
+   5946         collection.set_array(C)
+
+~/python/lib/python3.6/site-packages/matplotlib/collections.py in __init__(self, meshWidth, meshHeight, coordinates, antialiased, shading, **kwargs)
+   1844     def __init__(self, meshWidth, meshHeight, coordinates,
+   1845                  antialiased=True, shading='flat', **kwargs):
+-> 1846         Collection.__init__(self, **kwargs)
+   1847         self._meshWidth = meshWidth
+   1848         self._meshHeight = meshHeight
+
+~/python/lib/python3.6/site-packages/matplotlib/collections.py in __init__(self, edgecolors, facecolors, linewidths, linestyles, capstyle, joinstyle, antialiaseds, offsets, transOffset, norm, cmap, pickradius, hatch, urls, offset_position, zorder, **kwargs)
+    168 
+    169         self._path_effects = None
+--> 170         self.update(kwargs)
+    171         self._paths = None
+    172 
+
+~/python/lib/python3.6/site-packages/matplotlib/artist.py in update(self, props)
+    886         try:
+    887             ret = [_update_property(self, k, v)
+--> 888                    for k, v in props.items()]
+    889         finally:
+    890             self.eventson = store
+
+~/python/lib/python3.6/site-packages/matplotlib/artist.py in <listcomp>(.0)
+    886         try:
+    887             ret = [_update_property(self, k, v)
+--> 888                    for k, v in props.items()]
+    889         finally:
+    890             self.eventson = store
+
+~/python/lib/python3.6/site-packages/matplotlib/artist.py in _update_property(self, k, v)
+    879                 func = getattr(self, 'set_' + k, None)
+    880                 if not callable(func):
+--> 881                     raise AttributeError('Unknown property %s' % k)
+    882                 return func(v)
+    883 
+
+AttributeError: Unknown property fnt
+
+In [83]: sns.heatmap(confusion,annot=True,fmt='d',cbar=False)
+Out[83]: <matplotlib.axes._subplots.AxesSubplot at 0x7f1804429400>
+
+In [84]: plt.show()
+
+In [85]: accuracy_score(y_model,y_test)
+Out[85]: 0.9649122807017544
+
+In [86]: 
+
